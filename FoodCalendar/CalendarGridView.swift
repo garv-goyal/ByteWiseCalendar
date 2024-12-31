@@ -25,6 +25,8 @@ struct CalendarGridView: View {
                     }
                 }
                 .padding(.bottom, 4)
+                .padding(.trailing, 2)
+                .padding(.leading, 2)
 
                 // Calendar Grid
                 LazyVGrid(columns: columns, spacing: 5) {
@@ -43,7 +45,9 @@ struct CalendarGridView: View {
                             .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 2)
                     }
                 }
-                .padding(0)
+                .padding(.trailing, 2)
+                .padding(.leading, 2)
+            
 
                 // Bottom Section with "Nov 24" and Undo, Trash, Camera, and New Delete Button
                 HStack(spacing: 3) {
@@ -57,7 +61,7 @@ struct CalendarGridView: View {
                             .fontWeight(.bold)
                             .foregroundColor(.black)
                     }
-                    .padding(.leading, 7)
+                    .padding(.leading, 10)
                     .padding(.bottom, 10)
 
                     Spacer()
