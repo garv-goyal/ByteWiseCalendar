@@ -6,6 +6,7 @@ struct CalendarGridView: View {
     @State private var deletedItems: [FoodItem] = [] // Stack to track all deleted items
     @State private var showCamera = false // Track when to show the camera
     @State private var capturedImage: UIImage? // Store the captured image
+    @Binding var isDarkMode: Bool 
 
     let columns = Array(repeating: GridItem(.flexible(), spacing: 5), count: 7)
     let dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
@@ -32,7 +33,7 @@ struct CalendarGridView: View {
                 LazyVGrid(columns: columns, spacing: 5) {
                     // Previous Month Dates
                     ForEach(generatePreviousMonthDates(), id: \.self) { date in
-                        CalendarDateCell(date: date, foodItems: .constant([]), isNextMonthDate: true)
+                        CalendarDateCell(date: date, foodItems: .constant([]), isDarkMode: $isDarkMode, isNextMonthDate: true)
                             .frame(width: (geometry.size.width / 7) - 6, height: (geometry.size.width / 7) * 1.26)
                             .background(Color.purple.opacity(0.1))
                             .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 2)
@@ -40,7 +41,7 @@ struct CalendarGridView: View {
 
                     // Current Month Dates
                     ForEach(generateDates(), id: \.self) { date in
-                        CalendarDateCell(date: date, foodItems: $foodItems, isNextMonthDate: false)
+                        CalendarDateCell(date: date, foodItems: $foodItems, isDarkMode: $isDarkMode, isNextMonthDate: false)
                             .frame(width: (geometry.size.width / 7) - 6, height: (geometry.size.width / 7) * 1.26)
                             .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 2)
                     }
@@ -59,7 +60,7 @@ struct CalendarGridView: View {
                         Text(monthYearString(from: selectedDate))
                             .font(.system(size: 63, design: .rounded))
                             .fontWeight(.bold)
-                            .foregroundColor(.black)
+                            .foregroundColor(isDarkMode ? Color.white : Color.black)
                     }
                     .padding(.leading, 10)
                     .padding(.bottom, 10)
@@ -102,7 +103,7 @@ struct CalendarGridView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 95, height: 68)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(isDarkMode ? Color.white : Color.black)
                                     .padding(5)
                             }
                             .onTapGesture {
@@ -126,7 +127,7 @@ struct CalendarGridView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 95, height: 68)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(isDarkMode ? Color.white : Color.black)
                                     .padding(5)
                                     .onDrop(of: [.text], isTargeted: nil) { providers in
                                         handleDrop(providers: providers)
@@ -143,12 +144,12 @@ struct CalendarGridView: View {
                                 RoundedRectangle(cornerRadius: 5)
                                     .fill(Color.purple.opacity(0.3))
                                     .frame(width: 100, height: 89)
-
+                                
                                 Image(systemName: "camera")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 95, height: 68)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(isDarkMode ? Color.white : Color.black)
                                     .padding(5)
                                     .onTapGesture {
                                         showCamera = true

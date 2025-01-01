@@ -26,6 +26,7 @@ struct ContentView: View {
     @State private var searchQuery = ""
     @State private var filteredItems: [FoodItem] = []
     @State private var isFlipped = false
+    @State private var isDarkMode = false // State for dark mode
 
     var body: some View {
         VStack(spacing: 0) {
@@ -35,16 +36,27 @@ struct ContentView: View {
                 quickTipsSection()
             }
             .padding()
-            .background(LinearGradient(colors: [Color.purple.opacity(0.2), Color.blue.opacity(0.1)], startPoint: .top, endPoint: .bottom))
+            .background(
+                Group {
+                    if isDarkMode {
+                        Color(UIColor.systemGray6) // Solid dark mode background
+                    } else {
+                        LinearGradient(colors: [Color.purple.opacity(0.2), Color.blue.opacity(0.1)], startPoint: .top, endPoint: .bottom)
+                    }
+                }
+            )
 
-            CalendarGridView(selectedDate: $selectedDate, foodItems: $foodItems)
-                .background(Color.purple.opacity(0.1))
+            CalendarGridView(selectedDate: $selectedDate, foodItems: $foodItems, isDarkMode: $isDarkMode)
+                .background(isDarkMode ? Color(UIColor.systemGray5) : Color.purple.opacity(0.1))
+
         }
         .edgesIgnoringSafeArea(.all)
+        .environment(\.colorScheme, isDarkMode ? .dark : .light)
         .onChange(of: searchQuery) {
             filterItems()
         }
     }
+
 
     @ViewBuilder
     private func searchBarSection() -> some View {
@@ -54,6 +66,9 @@ struct ContentView: View {
             })
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .padding(.horizontal)
+            .background(isDarkMode ? Color(UIColor.systemGray3).opacity(0.7) : Color.white) // Highlighted for dark mode
+            .cornerRadius(8)
+            .foregroundColor(isDarkMode ? Color.white : Color.black) // Text color adapts to theme
             .frame(maxWidth: .infinity)
 
             ScrollView(.vertical, showsIndicators: true) {
@@ -70,6 +85,7 @@ struct ContentView: View {
         .frame(width: UIScreen.main.bounds.width * 0.3)
     }
 
+
     @ViewBuilder
     private func wasteComparisonSection() -> some View {
         VStack(spacing: 10) {
@@ -77,21 +93,21 @@ struct ContentView: View {
                 Text("Additional Info")
                     .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .foregroundColor(isDarkMode ? Color.white : Color.black)
 
                 Text("Last week you saved 30% more than this week. Focus on reducing waste this week!")
                     .font(.subheadline)
-                    .foregroundColor(.white)
+                    .foregroundColor(isDarkMode ? Color.white : Color.black)
                     .multilineTextAlignment(.center)
                     .padding()
-                    .background(Color.teal.opacity(0.8))
+                    .background(isDarkMode ? Color.teal.opacity(0.3) : Color.teal.opacity(0.9)) // Adjust opacity
                     .cornerRadius(10)
 
             } else {
                 Text("Waste Comparison")
                     .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .foregroundColor(isDarkMode ? Color.white : Color.black)
 
                 HStack(spacing: 30) {
                     CircularProgressView(label: "Last Week", value: lastWeekSavings, maxValue: 50, color: .yellow)
@@ -102,7 +118,7 @@ struct ContentView: View {
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 15)
-                .fill(isFlipped ? Color.teal.opacity(0.5) : Color.purple.opacity(0.5))
+                .fill(isDarkMode ? (isFlipped ?  Color.teal.opacity(0.5) : Color.purple.opacity(0.5)) : (isFlipped ?  Color.teal.opacity(0.4) : Color.purple.opacity(0.5))) // Adjusted for dark mode
                 .shadow(radius: 10)
         )
         .frame(width: UIScreen.main.bounds.width * 0.4)
@@ -116,28 +132,44 @@ struct ContentView: View {
     @ViewBuilder
     private func quickTipsSection() -> some View {
         VStack(spacing: 10) {
-            Text("Quick Tips")
-                .font(.headline)
-                .padding(8)
-                .background(Color.orange.opacity(0.8))
-                .cornerRadius(8)
-                .foregroundColor(.white)
+            HStack {
+                Text("Quick Tips")
+                    .font(.headline)
+                    .padding(8)
+                    .background(isDarkMode ? Color(UIColor.systemOrange).opacity(0.8) : Color.orange.opacity(0.8))
+                    .cornerRadius(8)
+                    .foregroundColor(isDarkMode ? Color.black : Color.white)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.leading, 38)
+
+                Button(action: { isDarkMode.toggle() }) {
+                    Image(systemName: isDarkMode ? "sun.max.fill" : "moon.fill")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(isDarkMode ? .yellow : .white)
+                        .padding(5)
+                        .background(Circle().fill(isDarkMode ? Color(UIColor.systemGray4) : Color.blue))
+                        .shadow(radius: 3)
+                }
+            }
 
             Text(quickTips[currentTipIndex])
                 .font(.subheadline)
                 .multilineTextAlignment(.center)
                 .padding(8)
-                .background(Color.orange.opacity(0.2))
+                .background(isDarkMode ? Color(UIColor.systemGray3) : Color.orange.opacity(0.2))
                 .cornerRadius(10)
+                .foregroundColor(isDarkMode ? Color.white : Color.black)
                 .onAppear {
                     Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { _ in
                         currentTipIndex = (currentTipIndex + 1) % quickTips.count
                     }
                 }
         }
-        .padding(.trailing, 35)
+        .padding(.trailing, 38)
         .frame(width: UIScreen.main.bounds.width * 0.3)
     }
+
 
     @ViewBuilder
     private func foodItemRow(item: FoodItem) -> some View {
@@ -150,14 +182,14 @@ struct ContentView: View {
             VStack(alignment: .leading, spacing: 5) {
                 Text(item.name)
                     .font(.caption)
-                    .foregroundColor(.black)
+                    .foregroundColor(isDarkMode ? Color.white : Color.black) // Text adapts to theme
                 Text("Stored Date: \(formattedDate(item.date))")
                     .font(.caption2)
-                    .foregroundColor(.gray)
+                    .foregroundColor(isDarkMode ? Color(UIColor.lightGray) : Color.gray)
             }
         }
         .padding(6)
-        .background(Color.purple.opacity(0.2))
+        .background(isDarkMode ? Color(UIColor.systemGray5) : Color.purple.opacity(0.2))
         .cornerRadius(10)
     }
 
@@ -175,6 +207,7 @@ struct ContentView: View {
         return formatter.string(from: date)
     }
 }
+
 
 struct CircularProgressView: View {
     let label: String

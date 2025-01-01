@@ -3,6 +3,7 @@ import SwiftUI
 struct CalendarDateCell: View {
     var date: Date
     @Binding var foodItems: [FoodItem]
+    @Binding var isDarkMode: Bool // Added isDarkMode binding
     @State private var draggedItem: String?
 
     var isNextMonthDate: Bool = false
@@ -18,13 +19,19 @@ struct CalendarDateCell: View {
                             .stroke(Color.blue, lineWidth: 2) // Border to emphasize the current date
                     )
             } else {
-                (isNextMonthDate ? Color.purple.opacity(0.1) : Color.white)
+                (isNextMonthDate
+                    ? (isDarkMode ? Color(UIColor.systemGray4) : Color.purple.opacity(0.1))
+                    : (isDarkMode ? Color(UIColor.systemGray5) : Color.white))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(isDarkMode ? Color.white : Color.clear, lineWidth: 1) // White border in dark mode
+                    )
             }
 
             // Display the day number at the top-left corner
             Text(dayString(from: date))
                 .font(.headline)
-                .foregroundColor(.black)
+                .foregroundColor(isDarkMode ? Color.white : Color.black) // White in dark mode
                 .padding(5)
 
             // Display the images centered in the cell
@@ -56,7 +63,6 @@ struct CalendarDateCell: View {
         return calendar.isDate(date, inSameDayAs: specificDate)
     }
 
-
     func dayString(from date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "d"
@@ -67,11 +73,3 @@ struct CalendarDateCell: View {
         foodItems.filter { Calendar.current.isDate($0.date, inSameDayAs: date) }
     }
 }
-
-
-
-
-
-
-
-
