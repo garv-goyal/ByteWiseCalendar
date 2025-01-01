@@ -15,7 +15,7 @@ This is an IOS app that helps users track their food inventory on a calendar. It
   <tr>
     <td>
       <img
-        width="300"
+        width="400"
         alt="Screenshot 2025-01-01 at 7 29 36 PM"
         src="https://github.com/user-attachments/assets/3bdf878d-b7ba-4e14-b868-784237c98135"
       />
@@ -23,7 +23,7 @@ This is an IOS app that helps users track their food inventory on a calendar. It
     <td style="width: 100px;"></td> 
     <td>
       <img
-        width="300"
+        width="400"
         alt="Screenshot 2025-01-01 at 7 30 45 PM"
         src="https://github.com/user-attachments/assets/03041c9f-4cd7-48f1-a09d-8b08b14e32e8"
       />
