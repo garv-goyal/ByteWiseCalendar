@@ -11,7 +11,25 @@ This is an IOS app that helps users track their food inventory on a calendar. It
 - Undo Support: Recover deleted items seamlessly.
 
 ## Screenshots
-<img width="558" alt="Screenshot 2024-12-29 at 1 18 35 PM" src="https://github.com/user-attachments/assets/2706a0e9-7ec5-4849-8864-df8856231c83" />
+<table align="center">
+  <tr>
+    <td>
+      <img
+        width="300"
+        alt="Screenshot 2025-01-01 at 7 29 36 PM"
+        src="https://github.com/user-attachments/assets/3bdf878d-b7ba-4e14-b868-784237c98135"
+      />
+    </td>
+    <td style="width: 100px;"></td> 
+    <td>
+      <img
+        width="300"
+        alt="Screenshot 2025-01-01 at 7 30 45 PM"
+        src="https://github.com/user-attachments/assets/03041c9f-4cd7-48f1-a09d-8b08b14e32e8"
+      />
+    </td>
+  </tr>
+</table>
 
 
 ## Installation
