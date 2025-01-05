@@ -6,7 +6,7 @@ struct HeaderSections: View {
     @Binding var foodItems: [FoodItem]
     @Binding var filteredItems: [FoodItem]
     
-    @State private var isFlipped = false
+    @Binding var isFlipped: Bool
     @State private var currentTipIndex = 0
     @State private var lastWeekSavings: Double = 15.30
     @State private var thisWeekSavings: Double = 5.45
@@ -14,7 +14,7 @@ struct HeaderSections: View {
     let quickTips = [
         "Store apples separately from bananas to prevent them from ripening too quickly.",
         "Carrots should be stored in a perforated plastic bag in the refrigerator to stay crisp.",
-        "Store chicken in the coldest part of the refrigerator and cook it within 1-2 days of purchase.",
+        "Store chicken in the coldest part of the refrigerator and cook it within 1-2 days of buy.",
         "Keep milk on the middle shelf of the refrigerator to maintain a consistent temperature.",
         "Potatoes should be stored in a cool, dark place to prevent sprouting."
     ]
@@ -22,7 +22,7 @@ struct HeaderSections: View {
     var body: some View {
         HStack(alignment: .center, spacing: 20) {
             searchBarSection()
-            wasteComparisonSection()
+            wasteComparisonSection() // Use the shared isFlipped state
             quickTipsSection()
         }
         .padding()
@@ -35,10 +35,6 @@ struct HeaderSections: View {
                 }
             }
         )
-        .onAppear {
-            // Initialize filteredItems with all foodItems when the view appears
-            filterItems()
-        }
     }
     
     @ViewBuilder
@@ -71,47 +67,46 @@ struct HeaderSections: View {
     }
     
     @ViewBuilder
-    private func wasteComparisonSection() -> some View {
-        VStack(spacing: 10) {
-            if isFlipped {
-                Text("Additional Info")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(isDarkMode ? Color.white : Color.black)
-                
-                Text("Last week you saved 30% more than this week. Focus on reducing waste this week!")
-                    .font(.subheadline)
-                    .foregroundColor(isDarkMode ? Color.white : Color.black)
-                    .multilineTextAlignment(.center)
-                    .padding()
-                    .background(isDarkMode ? Color.teal.opacity(0.3) : Color.teal.opacity(0.9))
-                    .cornerRadius(10)
-                
-            } else {
-                Text("Waste Comparison")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(isDarkMode ? Color.white : Color.black)
-                
-                HStack(spacing: 25) {
-                    CircularProgressView(label: "Last Week", value: lastWeekSavings, maxValue: 50, color: .yellow)
-                    CircularProgressView(label: "This Week", value: thisWeekSavings, maxValue: 50, color: .green)
+        private func wasteComparisonSection() -> some View {
+            VStack(spacing: 10) {
+                if isFlipped {
+                    Text("Additional Info")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(isDarkMode ? Color.white : Color.black)
+
+                    Text("Last week you saved 30% more than this week. Focus on reducing waste this week!")
+                        .font(.subheadline)
+                        .foregroundColor(isDarkMode ? Color.white : Color.black)
+                        .multilineTextAlignment(.center)
+                        .padding()
+                        .background(isDarkMode ? Color.teal.opacity(0.3) : Color.teal.opacity(0.9))
+                        .cornerRadius(10)
+                } else {
+                    Text("Waste Comparison")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(isDarkMode ? Color.white : Color.black)
+
+                    HStack(spacing: 25) {
+                        CircularProgressView(label: "Last Week", value: 15.30, maxValue: 50, color: .yellow)
+                        CircularProgressView(label: "This Week", value: 5.45, maxValue: 50, color: .green)
+                    }
+                }
+            }
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 15)
+                    .fill(isDarkMode ? (isFlipped ? Color.teal.opacity(0.5) : Color.purple.opacity(0.5)) : (isFlipped ? Color.teal.opacity(0.4) : Color.purple.opacity(0.5)))
+                    .shadow(radius: 10)
+            )
+            .frame(width: UIScreen.main.bounds.width * 0.4)
+            .onTapGesture {
+                withAnimation {
+                    isFlipped.toggle()
                 }
             }
         }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 15)
-                .fill(isDarkMode ? (isFlipped ?  Color.teal.opacity(0.5) : Color.purple.opacity(0.5)) : (isFlipped ?  Color.teal.opacity(0.4) : Color.purple.opacity(0.5)))
-                .shadow(radius: 10)
-        )
-        .frame(width: UIScreen.main.bounds.width * 0.4)
-        .onTapGesture {
-            withAnimation {
-                isFlipped.toggle()
-            }
-        }
-    }
     
     @ViewBuilder
     private func quickTipsSection() -> some View {

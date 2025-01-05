@@ -27,7 +27,7 @@ struct SettingsView: View {
                     HStack {
                         Text("Developer")
                         Spacer()
-                        Text("Your Name")
+                        Text("Garv Goyal")
                             .foregroundColor(.gray)
                     }
                 }

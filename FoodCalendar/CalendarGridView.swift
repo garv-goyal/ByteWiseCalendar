@@ -7,6 +7,7 @@ struct CalendarGridView: View {
     @State private var showCamera = false // Track when to show the camera
     @State private var capturedImage: UIImage? // Stores the captured image
     @Binding var isDarkMode: Bool
+    @Binding var isFlipped: Bool // Added binding for isFlipped
 
     let columns = Array(repeating: GridItem(.flexible(), spacing: -70), count: 7)
     let dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
@@ -49,21 +50,23 @@ struct CalendarGridView: View {
                 .padding(.trailing, 2)
                 .padding(.leading, 2)
             
-
                 // Bottom Section with "Nov 24" and Undo, Trash, Camera, and New Delete Button
                 HStack(spacing: 3) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 5)
                             .fill(Color.purple.opacity(0.3))
-                            .frame(width: 320, height: 70) // Same size as the buttons
+                            .frame(
+                                width: 320,
+                                height: isFlipped ? 70 : 75
+                            )
                         
                         Text(monthYearString(from: selectedDate))
-                            .font(.system(size: 60, design: .rounded))
+                            .font(.system(size: isFlipped ? 60 : 60, design: .rounded))
                             .fontWeight(.bold)
                             .foregroundColor(isDarkMode ? Color.white : Color.black)
                     }
                     .padding(.leading, 40)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, isFlipped ? 10 : 2)
 
                     Spacer()
 
@@ -75,7 +78,7 @@ struct CalendarGridView: View {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 5)
                                     .fill(Color.purple.opacity(0.3))
-                                    .frame(width: 100, height: 70)
+                                    .frame(width: 100, height: isFlipped ? 70 : 75)
 
                                 Image("pacman")
                                     .resizable()
@@ -88,7 +91,7 @@ struct CalendarGridView: View {
                                     }
                             }
                             Spacer()
-                                .padding(.bottom, 10)
+                                .padding(.bottom, isFlipped ? 10 : 2)
                         }
                         
                         // Undo Button
@@ -97,7 +100,7 @@ struct CalendarGridView: View {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 5)
                                     .fill(Color.purple.opacity(0.3))
-                                    .frame(width: 100, height: 70)
+                                    .frame(width: 100, height: isFlipped ? 70 : 75)
 
                                 Image(systemName: "arrow.uturn.backward")
                                     .resizable()
@@ -112,7 +115,7 @@ struct CalendarGridView: View {
                             .disabled(deletedItems.isEmpty)
                             .opacity(deletedItems.isEmpty ? 0.5 : 1.0)
                             Spacer()
-                                .padding(.bottom, 10)
+                                .padding(.bottom, isFlipped ? 10 : 2)
                         }
 
                         // Trash Button
@@ -121,7 +124,7 @@ struct CalendarGridView: View {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 5)
                                     .fill(Color.purple.opacity(0.3))
-                                    .frame(width: 100, height: 70)
+                                    .frame(width: 100, height: isFlipped ? 70 : 75)
 
                                 Image(systemName: "trash")
                                     .resizable()
@@ -134,7 +137,7 @@ struct CalendarGridView: View {
                                     }
                             }
                             Spacer()
-                                .padding(.bottom, 10)
+                                .padding(.bottom, isFlipped ? 10 : 2)
                         }
 
                         // Camera Button
@@ -143,7 +146,7 @@ struct CalendarGridView: View {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 5)
                                     .fill(Color.purple.opacity(0.3))
-                                    .frame(width: 100, height: 70)
+                                    .frame(width: 100, height: isFlipped ? 70 : 75)
                                 
                                 Image(systemName: "camera")
                                     .resizable()
@@ -156,7 +159,7 @@ struct CalendarGridView: View {
                                     }
                             }
                             Spacer()
-                                .padding(.bottom, 10)
+                                .padding(.bottom, isFlipped ? 10 : 2)
                         }
                     }
                     .padding(.trailing, 40)
