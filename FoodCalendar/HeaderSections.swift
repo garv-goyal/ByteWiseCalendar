@@ -45,7 +45,7 @@ struct HeaderSections: View {
     private func searchBarSection() -> some View {
         VStack(spacing: 8) {
             TextField("Search items...", text: $searchQuery)
-                .onChange(of: searchQuery) { _ in
+                .onChange(of: searchQuery) {
                     filterItems()
                 }
                 .textFieldStyle(RoundedBorderTextFieldStyle())
