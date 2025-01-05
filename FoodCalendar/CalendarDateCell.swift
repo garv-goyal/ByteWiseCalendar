@@ -42,7 +42,7 @@ struct CalendarDateCell: View {
                         Image(item.imageName)
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 40, height: 40)
+                            .frame(width: 33, height: 37)
                             .padding(4)
                             .onDrag {
                                 draggedItem = item.imageName
