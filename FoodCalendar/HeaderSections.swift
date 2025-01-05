@@ -35,24 +35,30 @@ struct HeaderSections: View {
                 }
             }
         )
+        .onAppear {
+            // Initialize filteredItems with all foodItems when the view appears
+            filterItems()
+        }
     }
     
     @ViewBuilder
     private func searchBarSection() -> some View {
         VStack(spacing: 8) {
-            TextField("Search items...", text: $searchQuery, onEditingChanged: { _ in
-                filterItems()
-            })
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .padding(.horizontal)
-            .background(isDarkMode ? Color(UIColor.systemGray3).opacity(0.7) : Color.white)
-            .cornerRadius(8)
-            .foregroundColor(isDarkMode ? Color.white : Color.black)
-            .frame(maxWidth: .infinity)
+            TextField("Search items...", text: $searchQuery)
+                .onChange(of: searchQuery) { _ in
+                    filterItems()
+                }
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding(.horizontal)
+                .background(isDarkMode ? Color(UIColor.systemGray3).opacity(0.7) : Color.white)
+                .cornerRadius(8)
+                .foregroundColor(isDarkMode ? Color.white : Color.black)
+                .frame(maxWidth: .infinity)
             
             ScrollView(.vertical, showsIndicators: true) {
                 VStack(spacing: 10) {
-                    let itemsToShow: [FoodItem] = searchQuery.isEmpty ? Array(foodItems.prefix(6)) : filteredItems
+                    // Display all items when not searching, otherwise display filtered items
+                    let itemsToShow: [FoodItem] = searchQuery.isEmpty ? foodItems : filteredItems
                     ForEach(itemsToShow, id: \.id) { item in
                         foodItemRow(item: item)
                     }
