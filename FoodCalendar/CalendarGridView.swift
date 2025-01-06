@@ -35,7 +35,7 @@ struct CalendarGridView: View {
                     // Previous Month Dates
                     ForEach(generatePreviousMonthDates(), id: \.self) { date in
                         CalendarDateCell(date: date, foodItems: .constant([]), isDarkMode: $isDarkMode, isNextMonthDate: true)
-                            .frame(width: (geometry.size.width / 7.55) - 6, height: (geometry.size.width / 8.25) * 1.26)
+                            .frame(width: (geometry.size.width / 7.55) - 6, height: (geometry.size.width / 8.20) * 1.26)
                             .background(Color.purple.opacity(0.1))
                             .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 2)
                     }
@@ -43,7 +43,7 @@ struct CalendarGridView: View {
                     // Current Month Dates
                     ForEach(generateDates(), id: \.self) { date in
                         CalendarDateCell(date: date, foodItems: $foodItems, isDarkMode: $isDarkMode, isNextMonthDate: false)
-                            .frame(width: (geometry.size.width / 7.55) - 6, height: (geometry.size.width / 8.25) * 1.26)
+                            .frame(width: (geometry.size.width / 7.55) - 6, height: (geometry.size.width / 8.20) * 1.26)
                             .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 2)
                     }
                 }

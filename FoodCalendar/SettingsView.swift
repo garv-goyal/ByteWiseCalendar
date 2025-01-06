@@ -126,12 +126,12 @@ struct SettingsView: View {
                 LinearGradient(
                     gradient: Gradient(colors: isDarkMode
                                        ? [Color.purple.opacity(0.5), Color.blue.opacity(0.3)]
-                                       : [Color.purple.opacity(0.0), Color.purple.opacity(0.0)]
+                                       : [Color.purple.opacity(0.1), Color.purple.opacity(0.0)]
                                       ),
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
-                .frame(width: 775, height: 250)
+                .frame(width: 775, height: 200)
                 .cornerRadius(15)
                 .shadow(radius: 5)
                 .padding()
@@ -142,22 +142,29 @@ struct SettingsView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 80, height: 80)
-                        .foregroundColor(Color.purple)
+                        .foregroundColor(isDarkMode ? Color.purple : Color.purple.opacity(1.5))
                         .shadow(radius: 5)
+                        .padding(.trailing, -30)
                     
                     Text("Food Calendar")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(isDarkMode ? Color.white : Color.black)
+                        .padding(.trailing, -30)
                     
                     Text("Manage your food items and reduce waste effortlessly.")
                         .font(.subheadline)
                         .foregroundColor(isDarkMode ? Color.white.opacity(0.7) : Color.black.opacity(0.7))
                         .multilineTextAlignment(.center)
-                        .padding([.leading, .trailing], 16)
+                        .padding(.leading, 16)
+                        .padding(.trailing, -15)
                 }
+                .padding(.bottom, 30)
+                .padding(.trailing, 30)
             }
-            .padding(.top, 0)
+            .padding(.top, 5)
+            .padding(.bottom, -15)
+            .padding(.trailing, 15)
             
             Divider()
             
@@ -175,7 +182,6 @@ struct SettingsView: View {
                     .padding(.horizontal, 16)
                     
                     SectionHeader(title: "Notifications")
-                    
                     Toggle(isOn: $notificationsEnabled) {
                         HStack {
                             Image(systemName: "bell.fill")
@@ -199,7 +205,7 @@ struct SettingsView: View {
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
-                        .background(isDarkMode ? Color(UIColor.systemGray5) : Color(UIColor.systemGray6))
+                        .background(isDarkMode ? Color(UIColor.systemGray5) : Color.purple.opacity(0.1))
                         .cornerRadius(10)
                     }
                     .sheet(isPresented: $showNotificationSettings) {
@@ -208,7 +214,6 @@ struct SettingsView: View {
                     }
                     
                     SectionHeader(title: "Data Management")
-                    
                     Button(action: exportData) {
                         HStack {
                             Image(systemName: "square.and.arrow.up")
@@ -220,7 +225,7 @@ struct SettingsView: View {
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
-                        .background(isDarkMode ? Color(UIColor.systemGray5) : Color(UIColor.systemGray6))
+                        .background(isDarkMode ? Color(UIColor.systemGray5) : Color.purple.opacity(0.1))
                         .cornerRadius(10)
                     }
                     
@@ -235,7 +240,7 @@ struct SettingsView: View {
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
-                        .background(isDarkMode ? Color(UIColor.systemGray5) : Color(UIColor.systemGray6))
+                        .background(isDarkMode ? Color(UIColor.systemGray5) : Color.purple.opacity(0.1))
                         .cornerRadius(10)
                     }
                     
@@ -252,7 +257,7 @@ struct SettingsView: View {
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
-                        .background(Color.red.opacity(0.1))
+                        .background(Color.red.opacity(0.0))
                         .cornerRadius(10)
                     }
                     .alert(isPresented: $showClearDataAlert) {
@@ -267,7 +272,6 @@ struct SettingsView: View {
                     }
                     
                     SectionHeader(title: "Privacy")
-                    
                     Button(action: {
                         showPrivacyPolicy = true
                     }) {
@@ -281,7 +285,7 @@ struct SettingsView: View {
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
-                        .background(isDarkMode ? Color(UIColor.systemGray5) : Color(UIColor.systemGray6))
+                        .background(isDarkMode ? Color(UIColor.systemGray5) : Color.purple.opacity(0.1))
                         .cornerRadius(10)
                     }
                     .sheet(isPresented: $showPrivacyPolicy) {
@@ -302,7 +306,7 @@ struct SettingsView: View {
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
-                        .background(isDarkMode ? Color(UIColor.systemGray5) : Color(UIColor.systemGray6))
+                        .background(isDarkMode ? Color(UIColor.systemGray5) : Color.purple.opacity(0.1))
                         .cornerRadius(10)
                     }
                     .sheet(isPresented: $showTermsOfService) {
@@ -325,7 +329,7 @@ struct SettingsView: View {
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
-                        .background(isDarkMode ? Color(UIColor.systemGray5) : Color(UIColor.systemGray6))
+                        .background(isDarkMode ? Color(UIColor.systemGray5) : Color.purple.opacity(0.1))
                         .cornerRadius(10)
                     }
                     .sheet(isPresented: $showFAQ) {
@@ -344,7 +348,7 @@ struct SettingsView: View {
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
-                        .background(isDarkMode ? Color(UIColor.systemGray5) : Color(UIColor.systemGray6))
+                        .background(isDarkMode ? Color(UIColor.systemGray5) : Color.purple.opacity(0.1))
                         .cornerRadius(10)
                     }
                     
@@ -375,8 +379,10 @@ struct SettingsView: View {
                     .padding(.horizontal, 16)
                 }
                 .padding(.bottom, 20)
+                .padding(.leading, 5)
             }
             .padding(.top, 10)
+            .padding(.trailing, 25)
             .background(
                 Group {
                     if isDarkMode {
@@ -387,37 +393,7 @@ struct SettingsView: View {
                 }
             )
         }
-        .background(isDarkMode ? Color.black : Color.purple.opacity(0.0))
+        .background(isDarkMode ? Color.black : Color.purple.opacity(0.1))
+        .padding(.leading, 20)
     }
 }
-//    struct SettingsView_Previews: PreviewProvider {
-//        static var previews: some View {
-//            SettingsView(isDarkMode: .constant(false))
-//                .previewLayout(.sizeThatFits)
-//        }
-//    }
-//    
-//    
-//    struct NotificationSettingsView_Previews: PreviewProvider {
-//        static var previews: some View {
-//            NotificationSettingsView()
-//        }
-//    }
-//    
-//    struct PrivacyPolicyView_Previews: PreviewProvider {
-//        static var previews: some View {
-//            PrivacyPolicyView()
-//        }
-//    }
-//    
-//    struct TermsOfServiceView_Previews: PreviewProvider {
-//        static var previews: some View {
-//            TermsOfServiceView()
-//        }
-//    }
-//    
-//    struct FAQView_Previews: PreviewProvider {
-//        static var previews: some View {
-//            FAQView()
-//        }
-//    }

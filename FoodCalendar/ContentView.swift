@@ -66,6 +66,7 @@ struct ContentView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(.top, -6.5)
             .background(
                 Group {
                     if isDarkMode {
