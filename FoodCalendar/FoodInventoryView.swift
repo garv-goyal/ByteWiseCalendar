@@ -26,7 +26,6 @@ struct FoodInventoryView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            // MARK: - Custom Header (ZStack)
             ZStack {
                 LinearGradient(
                     gradient: Gradient(colors: isDarkMode
@@ -36,10 +35,11 @@ struct FoodInventoryView: View {
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
-                .frame(height: 200)
+                .frame(width: 775, height: 200)
                 .cornerRadius(15)
                 .shadow(radius: 5)
-                .padding([.leading, .bottom, .trailing], 16)
+                .padding()
+                .padding([.leading, .bottom], 16)
                 
                 VStack(alignment: .center, spacing: 10) {
                     Image(systemName: "calendar.circle.fill")
@@ -48,20 +48,20 @@ struct FoodInventoryView: View {
                         .frame(width: 80, height: 80)
                         .foregroundColor(isDarkMode ? Color.purple : Color.purple.opacity(1.5))
                         .shadow(radius: 5)
-                        .padding(.trailing, -30)
+                        .padding(.trailing, -50)
                     
                     Text("Food Inventory")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(isDarkMode ? Color.white : Color.black)
-                        .padding(.trailing, -30)
+                        .padding(.trailing, -50)
                     
                     Text("Manage your food items and reduce waste effortlessly.")
                         .font(.subheadline)
                         .foregroundColor(isDarkMode ? Color.white.opacity(0.7) : Color.black.opacity(0.7))
                         .multilineTextAlignment(.center)
                         .padding(.leading, 16)
-                        .padding(.trailing, -15)
+                        .padding(.trailing, -35)
                 }
                 .padding(.bottom, 30)
                 .padding(.trailing, 30)
@@ -72,7 +72,6 @@ struct FoodInventoryView: View {
             
             Divider()
             
-            // MARK: - Edit Button Below the Divider
             HStack {
                 Spacer()
                 EditButton()
@@ -80,8 +79,9 @@ struct FoodInventoryView: View {
             }
             .padding(.horizontal, 16)
             .padding(.bottom, 5)
+            .padding(.trailing, 20)
+            .background(isDarkMode ? Color.black.edgesIgnoringSafeArea(.all) : Color.white.edgesIgnoringSafeArea(.all))
             
-            // MARK: - List of Food Items
             List {
                 ForEach(sortedFoodItems(), id: \.id) { item in
                     InventoryRow(foodItem: item, isDarkMode: isDarkMode)
@@ -92,7 +92,7 @@ struct FoodInventoryView: View {
             .background(isDarkMode ? Color.black.opacity(0.05) : Color.white)
             .accentColor(.purple)
         }
-        .background(isDarkMode ? Color.black.edgesIgnoringSafeArea(.all) : Color.white.edgesIgnoringSafeArea(.all))
+        .background(isDarkMode ? Color.black.edgesIgnoringSafeArea(.all) : Color.purple.opacity(0.0).edgesIgnoringSafeArea(.all))
         .navigationTitle("Food Inventory")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -139,7 +139,6 @@ struct InventoryRow: View {
             .padding(.leading, 5)
             
             Spacer()
-            
 
             if isExpiringSoon(date: foodItem.date) {
                 Image(systemName: "exclamationmark.triangle.fill")
