@@ -146,7 +146,7 @@ struct SettingsView: View {
                         .shadow(radius: 5)
                         .padding(.trailing, -30)
                     
-                    Text("Food Calendar")
+                    Text("Settings")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(isDarkMode ? Color.white : Color.black)
