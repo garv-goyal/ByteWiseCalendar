@@ -3,11 +3,11 @@ import SwiftUI
 struct FoodInventoryView: View {
     @Binding var foodItems: [FoodItem]
     @Binding var isDarkMode: Bool
-    
+
     init(foodItems: Binding<[FoodItem]>, isDarkMode: Binding<Bool>) {
         self._foodItems = foodItems
         self._isDarkMode = isDarkMode
-        
+
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor.systemPurple
@@ -19,13 +19,12 @@ struct FoodInventoryView: View {
             .foregroundColor: UIColor.white,
             .font: UIFont.boldSystemFont(ofSize: 34)
         ]
-        
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
-    
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(spacing: 0) {
             ZStack {
                 LinearGradient(
                     gradient: Gradient(colors: isDarkMode
@@ -37,51 +36,48 @@ struct FoodInventoryView: View {
                 )
                 .frame(width: 775, height: 200)
                 .cornerRadius(15)
-                .shadow(radius: 5)
-                .padding()
-                .padding([.leading, .bottom], 16)
-                
-                VStack(alignment: .center, spacing: 10) {
+                .padding([.leading, .trailing], 16)
+
+                VStack(spacing: 10) {
                     Image(systemName: "calendar.circle.fill")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 80, height: 80)
-                        .foregroundColor(isDarkMode ? Color.purple : Color.purple.opacity(1.5))
+                        .foregroundColor(.purple)
                         .shadow(radius: 5)
-                        .padding(.trailing, -50)
-                    
+
                     Text("Food Inventory")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(isDarkMode ? Color.white : Color.black)
-                        .padding(.trailing, -50)
-                    
+
                     Text("Manage your food items and reduce waste effortlessly.")
                         .font(.subheadline)
                         .foregroundColor(isDarkMode ? Color.white.opacity(0.7) : Color.black.opacity(0.7))
                         .multilineTextAlignment(.center)
-                        .padding(.leading, 16)
-                        .padding(.trailing, -35)
+                        .padding(.trailing, -5)
+                        .padding(.horizontal, 16)
                 }
-                .padding(.bottom, 30)
-                .padding(.trailing, 30)
+                .padding(.top, -10)
             }
-            .padding(.top, 5)
-            .padding(.bottom, -15)
-            .padding(.trailing, 15)
-            
+            .padding(.top, 18)
+            .padding(.bottom, 20)
+
             Divider()
-            
+                .background(Color.purple.opacity(0.3))
+
             HStack {
                 Spacer()
                 EditButton()
                     .foregroundColor(.purple)
             }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 5)
-            .padding(.trailing, 20)
-            .background(isDarkMode ? Color.black.edgesIgnoringSafeArea(.all) : Color.white.edgesIgnoringSafeArea(.all))
-            
+            .padding()
+            .background(isDarkMode ? Color(UIColor.systemGray6) : Color(UIColor.systemGray5))
+            .cornerRadius(10)
+            .shadow(color: isDarkMode ? Color.black.opacity(0.5) : Color.gray.opacity(0.1), radius: 2, x: 0, y: 2)
+            .padding([.leading, .trailing], 16)
+
+            // Food Items List
             List {
                 ForEach(sortedFoodItems(), id: \.id) { item in
                     InventoryRow(foodItem: item, isDarkMode: isDarkMode)
@@ -92,15 +88,27 @@ struct FoodInventoryView: View {
             .background(isDarkMode ? Color.black.opacity(0.05) : Color.white)
             .accentColor(.purple)
         }
-        .background(isDarkMode ? Color.black.edgesIgnoringSafeArea(.all) : Color.purple.opacity(0.0).edgesIgnoringSafeArea(.all))
-        .navigationTitle("Food Inventory")
-        .navigationBarTitleDisplayMode(.inline)
+        .background(
+            Group {
+                if isDarkMode {
+                    AnyView(Color(UIColor.systemGray6).edgesIgnoringSafeArea(.all))
+                } else {
+                    AnyView(
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color.purple.opacity(0.05), Color.white]),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        ).edgesIgnoringSafeArea(.all)
+                    )
+                }
+            }
+        )
     }
-    
+
     func sortedFoodItems() -> [FoodItem] {
         foodItems.sorted { $0.date < $1.date }
     }
-    
+
     func deleteItems(at offsets: IndexSet) {
         let sortedItems = sortedFoodItems()
         for index in offsets {
@@ -115,7 +123,7 @@ struct FoodInventoryView: View {
 struct InventoryRow: View {
     let foodItem: FoodItem
     var isDarkMode: Bool
-    
+
     var body: some View {
         HStack {
             Image(foodItem.imageName)
@@ -124,20 +132,18 @@ struct InventoryRow: View {
                 .frame(width: 50, height: 50)
                 .clipShape(Circle())
                 .shadow(radius: 2)
-                .accessibilityHidden(true)
-            
 
             VStack(alignment: .leading, spacing: 5) {
                 Text(foodItem.name)
                     .font(.headline)
                     .foregroundColor(isDarkMode ? .white : .black)
-                
+
                 Text("Expires on \(formattedDate(foodItem.date))")
                     .font(.subheadline)
                     .foregroundColor(isDarkMode ? .gray.opacity(0.7) : .secondary)
             }
             .padding(.leading, 5)
-            
+
             Spacer()
 
             if isExpiringSoon(date: foodItem.date) {
@@ -147,17 +153,17 @@ struct InventoryRow: View {
             }
         }
         .padding(.vertical, 5)
-        .background(isDarkMode ? Color(.systemGray6) : Color(.systemGray5))
+        .background(isDarkMode ? Color(UIColor.systemGray6) : Color(UIColor.systemGray6))
         .cornerRadius(10)
         .shadow(color: isDarkMode ? Color.black.opacity(0.1) : Color.gray.opacity(0.1), radius: 2, x: 0, y: 2)
     }
-    
+
     func formattedDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         return formatter.string(from: date)
     }
-    
+
     func isExpiringSoon(date: Date) -> Bool {
         let calendar = Calendar.current
         let now = Date()
