@@ -388,12 +388,12 @@ struct SettingsView: View {
                     if isDarkMode {
                         Color(UIColor.systemGray6)
                     } else {
-                        LinearGradient(colors: [Color.purple.opacity(0.2), Color.blue.opacity(0.1)], startPoint: .top, endPoint: .bottom)
+                        LinearGradient(colors: [Color.purple.opacity(0.0), Color.blue.opacity(0.0)], startPoint: .top, endPoint: .bottom)
                     }
                 }
             )
         }
-        .background(isDarkMode ? Color.black : Color.purple.opacity(0.1))
+        .background(isDarkMode ? Color(UIColor.systemGray6) : Color.purple.opacity(0.1))
         .padding(.leading, 20)
     }
 }

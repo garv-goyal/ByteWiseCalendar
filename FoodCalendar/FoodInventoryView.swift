@@ -77,14 +77,14 @@ struct FoodInventoryView: View {
             .shadow(color: isDarkMode ? Color.black.opacity(0.5) : Color.gray.opacity(0.1), radius: 2, x: 0, y: 2)
             .padding([.leading, .trailing], 16)
 
-            // Food Items List
             List {
                 ForEach(sortedFoodItems(), id: \.id) { item in
                     InventoryRow(foodItem: item, isDarkMode: isDarkMode)
                 }
                 .onDelete(perform: deleteItems)
             }
-            .listStyle(InsetGroupedListStyle())
+            .listStyle(PlainListStyle())
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
             .background(isDarkMode ? Color.black.opacity(0.05) : Color.white)
             .accentColor(.purple)
         }
@@ -103,6 +103,7 @@ struct FoodInventoryView: View {
                 }
             }
         )
+        .navigationBarHidden(true)
     }
 
     func sortedFoodItems() -> [FoodItem] {
@@ -120,9 +121,31 @@ struct FoodInventoryView: View {
     }
 }
 
+
+import SwiftUI
+
 struct InventoryRow: View {
     let foodItem: FoodItem
     var isDarkMode: Bool
+
+    @State private var showDetails = false
+    
+    var rowColor: Color {
+        let colorMapping: [String: Color] = [
+            "Potato": .yellow.opacity(0.2),
+            "Chicken": .pink.opacity(0.2),
+            "Orange": .orange.opacity(0.2),
+            "Banana": .yellow.opacity(0.2),
+            "Eggs": .purple.opacity(0.2),
+            "Apple": .red.opacity(0.2),
+            "Carrot": .green.opacity(0.2),
+            "Tomato": .red.opacity(0.2),
+            "Milk": .blue.opacity(0.2)
+        ]
+
+        return colorMapping[foodItem.name] ?? .gray.opacity(0.2)
+    }
+
 
     var body: some View {
         HStack {
@@ -132,6 +155,7 @@ struct InventoryRow: View {
                 .frame(width: 50, height: 50)
                 .clipShape(Circle())
                 .shadow(radius: 2)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 5) {
                 Text(foodItem.name)
@@ -140,7 +164,7 @@ struct InventoryRow: View {
 
                 Text("Expires on \(formattedDate(foodItem.date))")
                     .font(.subheadline)
-                    .foregroundColor(isDarkMode ? .gray.opacity(0.7) : .secondary)
+                    .foregroundColor(isDarkMode ? Color.gray.opacity(0.7) : .secondary)
             }
             .padding(.leading, 5)
 
@@ -153,9 +177,17 @@ struct InventoryRow: View {
             }
         }
         .padding(.vertical, 5)
-        .background(isDarkMode ? Color(UIColor.systemGray6) : Color(UIColor.systemGray6))
+        .padding(.horizontal, 10)
+        .background(rowColor)
         .cornerRadius(10)
-        .shadow(color: isDarkMode ? Color.black.opacity(0.1) : Color.gray.opacity(0.1), radius: 2, x: 0, y: 2)
+        .shadow(color: isDarkMode ? Color.black.opacity(0.1) : Color.gray.opacity(0.1),
+                radius: 2, x: 0, y: 2)
+        .onTapGesture {
+            showDetails.toggle()
+        }
+        .sheet(isPresented: $showDetails) {
+            FoodStatisticsView(foodItem: foodItem, isDarkMode: isDarkMode)
+        }
     }
 
     func formattedDate(_ date: Date) -> String {
