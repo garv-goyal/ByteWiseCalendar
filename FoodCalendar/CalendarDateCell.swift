@@ -58,7 +58,7 @@ struct CalendarDateCell: View {
 
     func isSpecificDate(_ date: Date) -> Bool {
         let calendar = Calendar.current
-        let specificDateComponents = DateComponents(year: 2024, month: 11, day: 7)
+        let specificDateComponents = DateComponents(year: 2024, month: 11, day: 2)
         let specificDate = calendar.date(from: specificDateComponents)!
         return calendar.isDate(date, inSameDayAs: specificDate)
     }

@@ -126,7 +126,7 @@ struct SettingsView: View {
                 LinearGradient(
                     gradient: Gradient(colors: isDarkMode
                                        ? [Color.purple.opacity(0.5), Color.blue.opacity(0.3)]
-                                       : [Color.purple.opacity(0.1), Color.purple.opacity(0.0)]
+                                       : [Color.purple.opacity(0.3), Color.blue.opacity(0.2)]
                                       ),
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
@@ -162,9 +162,9 @@ struct SettingsView: View {
                 .padding(.bottom, 30)
                 .padding(.trailing, 30)
             }
-            .padding(.top, 5)
+            .padding(.top, 2)
             .padding(.bottom, -15)
-            .padding(.trailing, 15)
+            .padding(.trailing, 20)
             
             Divider()
             

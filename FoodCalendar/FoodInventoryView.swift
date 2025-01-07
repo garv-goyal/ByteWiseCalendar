@@ -29,7 +29,7 @@ struct FoodInventoryView: View {
                 LinearGradient(
                     gradient: Gradient(colors: isDarkMode
                                        ? [Color.purple.opacity(0.5), Color.blue.opacity(0.3)]
-                                       : [Color.purple.opacity(0.1), Color.purple.opacity(0.0)]
+                                       : [Color.purple.opacity(0.3), Color.blue.opacity(0.2)]
                                       ),
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
@@ -58,7 +58,7 @@ struct FoodInventoryView: View {
                         .padding(.trailing, -5)
                         .padding(.horizontal, 16)
                 }
-                .padding(.top, -10)
+                .padding(.top, -14)
             }
             .padding(.top, 18)
             .padding(.bottom, 20)
