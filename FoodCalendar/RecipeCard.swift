@@ -8,7 +8,7 @@ struct RecipeCard: View {
         ZStack {
             LinearGradient(
                 gradient: Gradient(colors: isDarkMode
-                                   ? [Color.purple.opacity(0.7), Color.blue.opacity(0.7)]
+                                   ? [Color.purple.opacity(0.6), Color.blue.opacity(0.4)]
                                    : [Color.orange.opacity(0.3), Color.red.opacity(0.3)]),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
@@ -21,7 +21,7 @@ struct RecipeCard: View {
                     Image(recipe.imageName)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: 150, height: 120)
+                        .frame(width: 150, height: 150)
                         .clipped()
                         .cornerRadius(10)
                         .overlay(
@@ -32,8 +32,8 @@ struct RecipeCard: View {
                 } else {
                     Image(systemName: "photo")
                         .resizable()
-                        .scaledToFill()
-                        .frame(width: 155, height: 120)
+//                        .scaledToFill()
+                        .frame(width: 140, height: 140)
                         .clipped()
                         .cornerRadius(10)
                         .foregroundColor(.gray)
@@ -53,7 +53,7 @@ struct RecipeCard: View {
             }
             .padding()
         }
-        .frame(width: 170, height: 260, alignment: .top)
+        .frame(width: 180, height: 280, alignment: .top)
     }
 }
 

@@ -6,11 +6,20 @@ struct RecipeRecommendationsView: View {
     
     let recipes = [
         Recipe(title: "Apple Pie", ingredients: ["Apple", "Flour", "Sugar", "Butter"], imageName: "applepie"),
-        Recipe(title: "Chicken Salad", ingredients: ["Chicken", "Lettuce", "Tomato"], imageName: "chickensalad"),
+        Recipe(title: "Caeser Salad", ingredients: ["Chicken", "Lettuce", "Tomato"], imageName: "caesarsalad"),
         Recipe(title: "Banana Smoothie", ingredients: ["Banana", "Milk", "Honey"], imageName: "bananasmoothie"),
-        Recipe(title: "Carrot Shake", ingredients: ["Carrot", "Milk", "Honey"], imageName: "carrotshake"),
-        Recipe(title: "French Toast", ingredients: ["Eggs", "Milk", "Banana"], imageName: "frenchtst"),
+        Recipe(title: "Carrot Shake", ingredients: ["Carrot", "Milk", "Honey"], imageName: "carrotjuice"),
+        Recipe(title: "French Toast", ingredients: ["Eggs", "Milk", "Banana"], imageName: "frenchtoast"),
         Recipe(title: "Mixed Juice", ingredients: ["Banana", "Orange", "Apple"], imageName: "mixedjuice"),
+        Recipe(title: "Chocolate Pancakes", ingredients: ["Chocolate", "Flour", "Milk", "Eggs"], imageName: "chocolatepancake"),
+        Recipe(title: "GreeknSalad", ingredients: ["Cucumber", "Tomato", "Feta Cheese", "Olives"], imageName: "greensalad"),
+        Recipe(title: "Lemon Chicken", ingredients: ["Chicken", "Lemon", "Garlic"], imageName: "lemonchicken"),
+        Recipe(title: "Spaghetti Carbonara", ingredients: ["Spaghetti", "Eggs", "Bacon", "Parmesan"], imageName: "spaghetticarbonara"),
+        Recipe(title: "Mango Sorbet", ingredients: ["Mango", "Sugar", "Lime", "Orange"], imageName: "mangosorbet"),
+        Recipe(title: "Stuffed Bell Peppers", ingredients: ["Bell Peppers", "Rice", "Cheese", "Tomato"], imageName: "stuffedbellpeppers"),
+        Recipe(title: "Spinach Smoothie", ingredients: ["Spinach", "Banana", "Almond Milk"], imageName: "spinachsmoothie"),
+        Recipe(title: "Pumpkin Soup", ingredients: ["Pumpkin", "Cream", "Cinnamon", "Apple"], imageName: "pumpkinsoup"),
+        Recipe(title: "Beef Tacos", ingredients: ["Beef", "Chicken", "Tortilla", "Lettuce", "Cheese"], imageName: "beeftacos"),
         // to add more recipes
     ]
     
@@ -64,7 +73,7 @@ struct RecipeRecommendationsView: View {
                 .background(isDarkMode ? Color.black.opacity(0.05) : Color.white)
             
             ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 160), spacing: 12)], spacing: 16) {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 160), spacing: 18)], spacing: 12) {
                     ForEach(filteredRecipes()) { recipe in
                         RecipeCard(recipe: recipe, isDarkMode: isDarkMode)
                             .onTapGesture {
@@ -72,7 +81,8 @@ struct RecipeRecommendationsView: View {
                             }
                     }
                 }
-                .padding(.horizontal, 16)
+                .padding(.horizontal, 12)
+                .padding(.trailing, 18)
             }
             .padding(.leading, 20)
             .background(isDarkMode ? Color.black.opacity(0.05) : Color.white)
@@ -97,12 +107,13 @@ struct RecipeRecommendationsView: View {
     
     func filteredRecipes() -> [Recipe] {
         let matched = recipes.filter { recipe in
-            recipe.ingredients.allSatisfy { ingredient in
+            recipe.ingredients.contains { ingredient in
                 foodItems.contains { $0.name.lowercased() == ingredient.lowercased() }
             }
         }
         return matched.isEmpty ? recipes : matched
     }
+
 }
 
 struct Recipe: Identifiable {

@@ -20,7 +20,8 @@ struct RecipeDetailView: View {
                         if let uiImage = UIImage(named: recipe.imageName) {
                             Image(uiImage: uiImage)
                                 .resizable()
-                                .scaledToFit()
+//                                .scaledToFit()
+                                .frame(height: 450)
                                 .cornerRadius(15)
                                 .shadow(radius: 5)
                         } else {
