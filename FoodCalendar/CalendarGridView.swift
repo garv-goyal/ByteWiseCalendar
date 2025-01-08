@@ -3,11 +3,11 @@ import SwiftUI
 struct CalendarGridView: View {
     @Binding var selectedDate: Date
     @Binding var foodItems: [FoodItem]
-    @State private var deletedItems: [FoodItem] = [] // Stack to track all deleted items
-    @State private var showCamera = false // Track when to show the camera
-    @State private var capturedImage: UIImage? // Stores the captured image
+    @State private var deletedItems: [FoodItem] = []
+    @State private var showCamera = false
+    @State private var capturedImage: UIImage?
     @Binding var isDarkMode: Bool
-    @Binding var isFlipped: Bool // Added binding for isFlipped
+    @Binding var isFlipped: Bool
 
     let columns = Array(repeating: GridItem(.flexible(), spacing: -70), count: 7)
     let dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
@@ -15,7 +15,6 @@ struct CalendarGridView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
-                // Day Names Header with Purple Background
                 HStack(spacing: 5) {
                     ForEach(dayNames, id: \.self) { day in
                         Text(day)
@@ -30,9 +29,7 @@ struct CalendarGridView: View {
                 .padding(.trailing, 2)
                 .padding(.leading, 2)
 
-                // Calendar Grid
                 LazyVGrid(columns: columns, spacing: 5) {
-                    // Previous Month Dates
                     ForEach(generatePreviousMonthDates(), id: \.self) { date in
                         CalendarDateCell(date: date, foodItems: .constant([]), isDarkMode: $isDarkMode, isNextMonthDate: true)
                             .frame(width: (geometry.size.width / 7.55) - 6, height: (geometry.size.width / 8.20) * 1.26)
@@ -40,7 +37,6 @@ struct CalendarGridView: View {
                             .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 2)
                     }
 
-                    // Current Month Dates
                     ForEach(generateDates(), id: \.self) { date in
                         CalendarDateCell(date: date, foodItems: $foodItems, isDarkMode: $isDarkMode, isNextMonthDate: false)
                             .frame(width: (geometry.size.width / 7.55) - 6, height: (geometry.size.width / 8.20) * 1.26)
@@ -50,7 +46,7 @@ struct CalendarGridView: View {
                 .padding(.trailing, 2)
                 .padding(.leading, 2)
             
-                // Bottom Section with "Nov 24" and Undo, Trash, Camera, and New Delete Button
+                
                 HStack(spacing: 3) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 5)
@@ -72,7 +68,6 @@ struct CalendarGridView: View {
 
                     HStack(spacing: 7) {
                         
-                        // New Delete Button with Same Functionality as Trash
                         VStack {
                             Spacer()
                             ZStack {
@@ -94,7 +89,6 @@ struct CalendarGridView: View {
                                 .padding(.bottom, isFlipped ? 10 : 2)
                         }
                         
-                        // Undo Button
                         VStack {
                             Spacer()
                             ZStack {
@@ -118,7 +112,6 @@ struct CalendarGridView: View {
                                 .padding(.bottom, isFlipped ? 10 : 2)
                         }
 
-                        // Trash Button
                         VStack {
                             Spacer()
                             ZStack {
@@ -140,7 +133,6 @@ struct CalendarGridView: View {
                                 .padding(.bottom, isFlipped ? 10 : 2)
                         }
 
-                        // Camera Button
                         VStack {
                             Spacer()
                             ZStack {
@@ -172,14 +164,12 @@ struct CalendarGridView: View {
         }
     }
 
-    // Helper Function to Format Month and Year as "Nov 24"
     func monthYearString(from date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMM YYYY" // e.g., "Nov 24"
+        formatter.dateFormat = "MMM YYYY"
         return formatter.string(from: date)
     }
 
-    // Generate Previous Month Dates for the Calendar
     func generatePreviousMonthDates() -> [Date] {
         var previousMonthDates: [Date] = []
         let calendar = Calendar.current
@@ -187,7 +177,6 @@ struct CalendarGridView: View {
         let previousMonth = calendar.date(byAdding: .month, value: -1, to: startOfMonth)!
         let range = calendar.range(of: .day, in: .month, for: previousMonth)!
 
-        // Get the last few days of the previous month to fill the first week
         let numberOfDaysToShow = 5
         let startDay = range.count - numberOfDaysToShow + 1
 
@@ -199,7 +188,6 @@ struct CalendarGridView: View {
         return previousMonthDates
     }
 
-    // Generate Current Month Dates for the Calendar
     func generateDates() -> [Date] {
         var dates: [Date] = []
         let calendar = Calendar.current
@@ -214,7 +202,6 @@ struct CalendarGridView: View {
         return dates
     }
 
-    // Handle Drop Action for Trash Button
     func handleDrop(providers: [NSItemProvider]) -> Bool {
         for provider in providers {
             if provider.canLoadObject(ofClass: NSString.self) {
@@ -222,7 +209,7 @@ struct CalendarGridView: View {
                     if let imageName = object as? String {
                         DispatchQueue.main.async {
                             if let itemToDelete = foodItems.first(where: { $0.imageName == imageName }) {
-                                deletedItems.append(itemToDelete) // Store the deleted item in the stack
+                                deletedItems.append(itemToDelete)
                                 foodItems.removeAll { $0.imageName == imageName }
                             }
                         }
@@ -234,7 +221,6 @@ struct CalendarGridView: View {
         return false
     }
 
-    // Undo the Last Deleted Item
     func undoDelete() {
         if let lastItem = deletedItems.popLast() {
             foodItems.append(lastItem)

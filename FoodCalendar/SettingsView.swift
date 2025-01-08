@@ -138,7 +138,7 @@ struct SettingsView: View {
                 .padding([.leading, .bottom, .trailing], 16)
                 
                 VStack(alignment: .center, spacing: 10) {
-                    Image(systemName: "calendar.circle.fill")
+                    Image(systemName: "gear.circle.fill")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 80, height: 80)

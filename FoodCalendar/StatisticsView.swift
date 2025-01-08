@@ -267,6 +267,7 @@ struct StatisticCard: View {
 }
 
 
+
 struct CircularRingView: View {
     let progress: Double 
     var isDarkMode: Bool

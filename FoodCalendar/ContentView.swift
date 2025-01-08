@@ -14,7 +14,6 @@ struct ContentView: View {
 
     @State private var selectedDate = Calendar.current.date(from: DateComponents(year: 2024, month: 11))!
     @State private var foodItems: [FoodItem] = [
-        // Your existing food items...
         FoodItem(name: "Apple", imageName: "apple", date: Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 6))!),
         FoodItem(name: "Chicken", imageName: "chicken", date: Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 2))!),
         FoodItem(name: "Banana", imageName: "banana", date: Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 3))!),
@@ -42,11 +41,9 @@ struct ContentView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            // Main Content Area
             VStack(spacing: 0) {
                 Spacer()
                 
-                // Display content based on selected tab
                 switch selectedTab {
                 case .calendar:
                     CalendarViewWrapper(selectedDate: $selectedDate, foodItems: $foodItems, isDarkMode: $isDarkMode)
@@ -77,9 +74,8 @@ struct ContentView: View {
                 }
             )
             
-            // Custom Bottom Navigation Bar
             CustomTabBar(selectedTab: $selectedTab, isDarkMode: $isDarkMode)
         }
-        .edgesIgnoringSafeArea(.bottom) // Ensure the navigation bar reaches the bottom
+        .edgesIgnoringSafeArea(.bottom) 
     }
 }

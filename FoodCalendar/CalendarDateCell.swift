@@ -10,13 +10,12 @@ struct CalendarDateCell: View {
 
     var body: some View {
         ZStack(alignment: .topLeading) {
-            // Highlight the current date with a special background or border
             if isSpecificDate(date) {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.blue.opacity(0.3)) // Background color for the current date
+                    .fill(Color.blue.opacity(0.3))
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.blue, lineWidth: 2) // Border to emphasize the current date
+                            .stroke(Color.blue, lineWidth: 2)
                     )
             } else {
                 (isNextMonthDate
@@ -24,17 +23,15 @@ struct CalendarDateCell: View {
                     : (isDarkMode ? Color(UIColor.systemGray5) : Color.white))
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
-                            .stroke(isDarkMode ? Color.white : Color.clear, lineWidth: 1) // White border in dark mode
+                            .stroke(isDarkMode ? Color.white : Color.clear, lineWidth: 1)
                     )
             }
 
-            // Display the day number at the top-left corner
             Text(dayString(from: date))
                 .font(.headline)
-                .foregroundColor(isDarkMode ? Color.white : Color.black) // White in dark mode
+                .foregroundColor(isDarkMode ? Color.white : Color.black)
                 .padding(5)
 
-            // Display the images centered in the cell
             VStack {
                 Spacer()
                 HStack(spacing: 0) {
@@ -53,7 +50,7 @@ struct CalendarDateCell: View {
                 Spacer()
             }
         }
-        .cornerRadius(8) // Rounded corners for the cell
+        .cornerRadius(8) 
     }
 
     func isSpecificDate(_ date: Date) -> Bool {

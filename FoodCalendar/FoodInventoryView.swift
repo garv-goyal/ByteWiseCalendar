@@ -39,7 +39,7 @@ struct FoodInventoryView: View {
                 .padding([.leading, .trailing], 16)
 
                 VStack(spacing: 10) {
-                    Image(systemName: "calendar.circle.fill")
+                    Image(systemName: "archivebox.circle.fill")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 80, height: 80)

@@ -7,7 +7,7 @@ struct CalendarViewWrapper: View {
 
     @State private var searchQuery = ""
     @State private var filteredItems: [FoodItem] = []
-    @State private var isFlipped = false // Shared state for Waste Comparison flipping
+    @State private var isFlipped = false 
 
     var body: some View {
         VStack(spacing: 0) {
@@ -16,14 +16,14 @@ struct CalendarViewWrapper: View {
                 searchQuery: $searchQuery,
                 foodItems: $foodItems,
                 filteredItems: $filteredItems,
-                isFlipped: $isFlipped // Pass isFlipped to HeaderSections
+                isFlipped: $isFlipped
             )
 
             CalendarGridView(
                 selectedDate: $selectedDate,
                 foodItems: $foodItems,
                 isDarkMode: $isDarkMode,
-                isFlipped: $isFlipped // Pass isFlipped to CalendarGridView
+                isFlipped: $isFlipped 
             )
             .background(isDarkMode ? Color(UIColor.systemGray5) : Color.purple.opacity(0.1))
         }

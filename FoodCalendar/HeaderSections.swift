@@ -22,7 +22,7 @@ struct HeaderSections: View {
     var body: some View {
         HStack(alignment: .center, spacing: 20) {
             searchBarSection()
-            wasteComparisonSection() // Use the shared isFlipped state
+            wasteComparisonSection() 
             quickTipsSection()
         }
         .padding()
@@ -177,10 +177,8 @@ struct HeaderSections: View {
     
     func filterItems() {
         if searchQuery.isEmpty {
-            // Show all items when the search query is empty
             filteredItems = foodItems
         } else {
-            // Filter items based on the search query
             filteredItems = foodItems.filter { $0.name.localizedCaseInsensitiveContains(searchQuery) }
         }
     }
