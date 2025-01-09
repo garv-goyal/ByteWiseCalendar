@@ -12,7 +12,7 @@ struct ContentView: View {
     @State private var selectedTab: Tab = .calendar
     @State private var isDarkMode: Bool = false
 
-    @State private var selectedDate = Calendar.current.date(from: DateComponents(year: 2024, month: 11))!
+    @State private var selectedDate = Date()
     @State private var foodItems: [FoodItem] = [
         FoodItem(name: "Apple", imageName: "apple", date: Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 6))!),
         FoodItem(name: "Chicken", imageName: "chicken", date: Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 2))!),
