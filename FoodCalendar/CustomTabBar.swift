@@ -20,11 +20,11 @@ struct CustomTabBar: View {
             
             Spacer()
             
-            TabBarButton(selectedTab: $selectedTab, currentTab: .settings, icon: "gearshape", label: "Settings")
+            TabBarButton(selectedTab: $selectedTab, currentTab: .statistics, icon: "chart.bar", label: "Statistics")
             
             Spacer()
             
-            TabBarButton(selectedTab: $selectedTab, currentTab: .statistics, icon: "chart.bar", label: "Statistics")
+            TabBarButton(selectedTab: $selectedTab, currentTab: .settings, icon: "gearshape", label: "Settings")
             
             Spacer()
         }
