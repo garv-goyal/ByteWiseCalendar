@@ -40,8 +40,8 @@ struct CalendarDateCell: View {
                             Image(item.imageName)
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 35, height: 35)
-                                .padding(4)
+                                .frame(width: 40, height: 40)
+                                .padding(2)
                                 .onDrag {
                                     draggedItem = item.imageName
                                     return NSItemProvider(object: item.imageName as NSString)
