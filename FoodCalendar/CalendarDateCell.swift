@@ -3,14 +3,14 @@ import SwiftUI
 struct CalendarDateCell: View {
     var date: Date
     @Binding var foodItems: [FoodItem]
-    @Binding var isDarkMode: Bool // Added isDarkMode binding
+    @Binding var isDarkMode: Bool
     @State private var draggedItem: String?
 
     var isNextMonthDate: Bool = false
 
     var body: some View {
         ZStack(alignment: .topLeading) {
-            if isSpecificDate(date) {
+            if isToday(date) {
                 RoundedRectangle(cornerRadius: 8)
                     .fill(Color.blue.opacity(0.3))
                     .overlay(
@@ -34,30 +34,30 @@ struct CalendarDateCell: View {
 
             VStack {
                 Spacer()
-                HStack(spacing: 0) {
-                    ForEach(itemsForDate(date: date).prefix(3), id: \.self) { item in
-                        Image(item.imageName)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 33, height: 37)
-                            .padding(4)
-                            .onDrag {
-                                draggedItem = item.imageName
-                                return NSItemProvider(object: item.imageName as NSString)
-                            }
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 4) {
+                        ForEach(itemsForDate(date: date), id: \.id) { item in
+                            Image(item.imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 40, height: 40)
+                                .padding(2)
+                                .onDrag {
+                                    draggedItem = item.imageName
+                                    return NSItemProvider(object: item.imageName as NSString)
+                                }
+                        }
                     }
                 }
+                .padding(.horizontal, 4)
                 Spacer()
             }
         }
-        .cornerRadius(8) 
+        .cornerRadius(8)
     }
 
-    func isSpecificDate(_ date: Date) -> Bool {
-        let calendar = Calendar.current
-        let specificDateComponents = DateComponents(year: 2024, month: 11, day: 2)
-        let specificDate = calendar.date(from: specificDateComponents)!
-        return calendar.isDate(date, inSameDayAs: specificDate)
+    func isToday(_ date: Date) -> Bool {
+        Calendar.current.isDateInToday(date)
     }
 
     func dayString(from date: Date) -> String {
@@ -70,3 +70,4 @@ struct CalendarDateCell: View {
         foodItems.filter { Calendar.current.isDate($0.date, inSameDayAs: date) }
     }
 }
+

@@ -22,8 +22,8 @@ struct StatisticsView: View {
             
             ScrollView {
                 VStack(spacing: 20) {
-                    let specifiedDate = Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 2))!
-                    let expiringSoonCount = itemsExpiringSoon(from: specifiedDate).count
+                    let today = Calendar.current.startOfDay(for: Date())
+                    let expiringSoonCount = itemsExpiringSoon(from: today).count
                     
                     FancyHeader(isDarkMode: isDarkMode)
                 
@@ -82,18 +82,17 @@ struct StatisticsView: View {
                     .padding(.horizontal, 16)
                     
                     VStack(spacing: 15) {
-                        Text("Expiring Soon by Day (Next 5 days from Nov 2, 2024)")
+                        Text("Expiring Soon by Day (Next 5 days)")
                             .font(.headline)
                             .foregroundColor(isDarkMode ? .white : .black)
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 10) {
-                                let specifiedDate = Calendar.current.date(from: DateComponents(year: 2024, month: 11, day: 2))!
                                 let calendar = Calendar.current
-                                let startOfSpecifiedDate = calendar.startOfDay(for: specifiedDate)
-                                
+                                let today = calendar.startOfDay(for: Date())
+
                                 ForEach(1...5, id: \.self) { offset in
-                                    if let targetDate = calendar.date(byAdding: .day, value: offset, to: startOfSpecifiedDate) {
+                                    if let targetDate = calendar.date(byAdding: .day, value: offset, to: today) {
                                         let dayItems = foodItems.filter { calendar.isDate($0.date, inSameDayAs: targetDate) }
                                         DayExpiringColumn(dayOffset: offset, items: dayItems, isDarkMode: isDarkMode)
                                     }

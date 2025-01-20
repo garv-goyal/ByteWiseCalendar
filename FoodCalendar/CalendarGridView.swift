@@ -42,6 +42,13 @@ struct CalendarGridView: View {
                             .frame(width: (geometry.size.width / 7.55) - 6, height: (geometry.size.width / 8.20) * 1.26)
                             .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 2)
                     }
+                    
+                    ForEach(generateNextMonthDates(), id: \.self) { date in
+                        CalendarDateCell(date: date, foodItems: .constant([]), isDarkMode: $isDarkMode, isNextMonthDate: true)
+                            .frame(width: (geometry.size.width / 7.55) - 6, height: (geometry.size.width / 8.20) * 1.26)
+                            .background(Color.purple.opacity(0.2))
+                            .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 2)
+                    }
                 }
                 .padding(.trailing, 2)
                 .padding(.leading, 2)
@@ -173,19 +180,44 @@ struct CalendarGridView: View {
     func generatePreviousMonthDates() -> [Date] {
         var previousMonthDates: [Date] = []
         let calendar = Calendar.current
-        let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: selectedDate))!
+        let startOfMonth = calendar.date(
+            from: calendar.dateComponents([.year, .month], from: selectedDate)
+        )!
+        let firstWeekdayOfMonth = calendar.component(.weekday, from: startOfMonth)
+        let daysToShow = firstWeekdayOfMonth - 1
+    
         let previousMonth = calendar.date(byAdding: .month, value: -1, to: startOfMonth)!
         let range = calendar.range(of: .day, in: .month, for: previousMonth)!
-
-        let numberOfDaysToShow = 5
-        let startDay = range.count - numberOfDaysToShow + 1
-
-        for day in startDay...range.count {
+        let totalDaysPreviousMonth = range.count
+        let startDay = totalDaysPreviousMonth - daysToShow + 1
+        
+        for day in startDay...totalDaysPreviousMonth {
             if let date = calendar.date(byAdding: .day, value: day - 1, to: previousMonth) {
                 previousMonthDates.append(date)
             }
         }
+        
         return previousMonthDates
+    }
+    
+    
+    func generateNextMonthDates() -> [Date] {
+        var nextMonthDates: [Date] = []
+        let calendar = Calendar.current
+        let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: selectedDate))!
+        let range = calendar.range(of: .day, in: .month, for: selectedDate)!
+        let lastDayOfMonth = calendar.date(byAdding: .day, value: range.count - 1, to: startOfMonth)!
+        let lastWeekday = calendar.component(.weekday, from: lastDayOfMonth)
+        let daysToShow = 7 - lastWeekday
+        let nextMonth = calendar.date(byAdding: .month, value: 1, to: startOfMonth)!
+        
+        for day in 1...daysToShow {
+            if let date = calendar.date(byAdding: .day, value: day - 1, to: nextMonth) {
+                nextMonthDates.append(date)
+            }
+        }
+        
+        return nextMonthDates
     }
 
     func generateDates() -> [Date] {
